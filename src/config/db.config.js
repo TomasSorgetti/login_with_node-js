@@ -1,8 +1,12 @@
+require("dotenv").config();
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
+
 module.exports = {
-  HOST: "localhost",
-  USER: "admin",
-  PASSWORD: "admin",
-  DB: "login-template",
+  HOST: DB_HOST,
+  USER: DB_USER,
+  PASSWORD: DB_PASSWORD,
+  DB: DB_NAME,
+  PORT: DB_PORT,
   dialect: "postgres",
   pool: {
     max: 5,
