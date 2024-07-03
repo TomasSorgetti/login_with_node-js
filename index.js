@@ -1,6 +1,7 @@
 const server = require("./src/server");
 const PORT = 3001;
 const db = require("./src/models/index.db");
+const authController = require("./src/controllers/auth.controller");
 
 const Role = db.role;
 
@@ -12,19 +13,24 @@ server.listen(PORT, () => {
   });
 });
 
-function initial() {
-  Role.findOrCreate({
-    where: { name: "user" },
-    defaults: { name: "user" },
-  });
-
-  Role.findOrCreate({
-    where: { name: "moderator" },
-    defaults: { name: "moderator" },
-  });
-
-  Role.findOrCreate({
-    where: { name: "admin" },
-    defaults: { name: "admin" },
-  });
+async function initial() {
+  try {
+    await Promise.all([
+      Role.findOrCreate({
+        where: { name: "user" },
+        defaults: { name: "user" },
+      }),
+      Role.findOrCreate({
+        where: { name: "moderator" },
+        defaults: { name: "moderator" },
+      }),
+      Role.findOrCreate({
+        where: { name: "admin" },
+        defaults: { name: "admin" },
+      }),
+    ]);
+    console.log("Roles are initialized");
+  } catch (err) {
+    console.error("Error initializing roles:", err);
+  }
 }
